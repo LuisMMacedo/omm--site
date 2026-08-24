@@ -105,6 +105,13 @@ function Field({
   );
 }
 
+/**
+ * Ordem dos passos: contexto do negócio primeiro (perguntas rápidas, de
+ * baixo compromisso, que engajam), contato por último (pedido "caro",
+ * feito só quando a pessoa já investiu esforço e está a um clique da
+ * recompensa). Segue o princípio da reciprocidade — entregar valor antes
+ * de pedir algo em troca.
+ */
 export default function Triagem() {
   const [step, setStep] = useState<Step>(1);
   const [data, setData] = useState<FormData>(EMPTY);
@@ -118,7 +125,16 @@ export default function Triagem() {
     setErrors((e) => ({ ...e, [k]: undefined }));
   };
 
-  const validateStep1 = () => {
+  const validateContexto = () => {
+    const e: Partial<Record<keyof FormData, string>> = {};
+    if (!data.segmento.trim()) e.segmento = 'Informe o segmento.';
+    if (!data.objetivo) e.objetivo = 'Escolha um objetivo.';
+    if (!data.situacao) e.situacao = 'Escolha uma opção.';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const validateContato = () => {
     const e: Partial<Record<keyof FormData, string>> = {};
     if (!data.nome.trim()) e.nome = 'Informe seu nome.';
     if (!data.empresa.trim()) e.empresa = 'Informe a empresa.';
@@ -128,17 +144,8 @@ export default function Triagem() {
     return Object.keys(e).length === 0;
   };
 
-  const validateStep2 = () => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-    if (!data.segmento.trim()) e.segmento = 'Informe o segmento.';
-    if (!data.objetivo) e.objetivo = 'Escolha um objetivo.';
-    if (!data.situacao) e.situacao = 'Escolha uma opção.';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
   const gerar = async () => {
-    if (!validateStep2()) return;
+    if (!validateContato()) return;
     setLoading(true);
     setApiError('');
     try {
@@ -200,7 +207,7 @@ export default function Triagem() {
 
       <div className="glass rounded-3xl p-6 sm:p-10">
         <AnimatePresence mode="wait">
-          {/* ——— PASSO 1 ——— */}
+          {/* ——— PASSO 1: CONTEXTO DO NEGÓCIO ——— */}
           {step === 1 && (
             <motion.div
               key="s1"
@@ -210,43 +217,46 @@ export default function Triagem() {
               transition={{ duration: 0.4, ease: EASE_OMM }}
             >
               <h3 className="font-display text-2xl font-medium text-pure">
-                {triagem.passo1.title}
+                {triagem.passoContexto.title}
               </h3>
-              <p className="mt-2 text-sm text-grade">{triagem.passo1.subtitle}</p>
+              <p className="mt-2 text-sm text-grade">{triagem.passoContexto.subtitle}</p>
 
-              <div className="mt-8 grid gap-5 sm:grid-cols-2">
-                <Field label={triagem.passo1.fields.nome.label} error={errors.nome}>
+              <div className="mt-8 space-y-7">
+                <Field label={triagem.passoContexto.segmento.label} error={errors.segmento}>
                   <input
                     className={inputClass}
-                    placeholder={triagem.passo1.fields.nome.placeholder}
-                    value={data.nome}
-                    onChange={(e) => set('nome', e.target.value)}
+                    placeholder={triagem.passoContexto.segmento.placeholder}
+                    value={data.segmento}
+                    onChange={(e) => set('segmento', e.target.value)}
                   />
                 </Field>
-                <Field label={triagem.passo1.fields.empresa.label} error={errors.empresa}>
-                  <input
-                    className={inputClass}
-                    placeholder={triagem.passo1.fields.empresa.placeholder}
-                    value={data.empresa}
-                    onChange={(e) => set('empresa', e.target.value)}
-                  />
+
+                <Field label={triagem.passoContexto.objetivo.label} error={errors.objetivo}>
+                  <div className="flex flex-wrap gap-2.5">
+                    {triagem.passoContexto.objetivo.options.map((o) => (
+                      <OptionChip key={o} active={data.objetivo === o} onClick={() => set('objetivo', o)}>
+                        {o}
+                      </OptionChip>
+                    ))}
+                  </div>
                 </Field>
-                <Field label={triagem.passo1.fields.whatsapp.label} error={errors.whatsapp}>
-                  <input
-                    className={inputClass}
-                    inputMode="tel"
-                    placeholder={triagem.passo1.fields.whatsapp.placeholder}
-                    value={data.whatsapp}
-                    onChange={(e) => set('whatsapp', e.target.value)}
-                  />
+
+                <Field label={triagem.passoContexto.situacao.label} error={errors.situacao}>
+                  <div className="flex flex-wrap gap-2.5">
+                    {triagem.passoContexto.situacao.options.map((o) => (
+                      <OptionChip key={o} active={data.situacao === o} onClick={() => set('situacao', o)}>
+                        {o}
+                      </OptionChip>
+                    ))}
+                  </div>
                 </Field>
-                <Field label={triagem.passo1.fields.email.label} error={errors.email}>
-                  <input
-                    className={inputClass}
-                    inputMode="email"
-                    placeholder={triagem.passo1.fields.email.placeholder}
-                    value={data.email}
-                    onChange={(e) => set('email', e.target.value)}
+
+                <Field label={triagem.passoContexto.desafio.label}>
+                  <textarea
+                    className={cn(inputClass, 'min-h-[84px] resize-none')}
+                    placeholder={triagem.passoContexto.desafio.placeholder}
+                    value={data.desafio}
+                    onChange={(e) => set('desafio', e.target.value)}
                   />
                 </Field>
               </div>
@@ -255,8 +265,8 @@ export default function Triagem() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (!validateStep1()) return;
-                    track('diagnostico_passo1');
+                    if (!validateContexto()) return;
+                    track('diagnostico_passo_contexto');
                     setStep(2);
                   }}
                   className="inline-flex items-center gap-2 rounded-full bg-pure px-7 py-3.5 text-sm font-medium text-void transition-colors duration-500 hover:bg-accent"
@@ -268,7 +278,7 @@ export default function Triagem() {
             </motion.div>
           )}
 
-          {/* ——— PASSO 2 ——— */}
+          {/* ——— PASSO 2: CONTATO (pedido feito na hora de maior motivação) ——— */}
           {step === 2 && (
             <motion.div
               key="s2"
@@ -278,46 +288,43 @@ export default function Triagem() {
               transition={{ duration: 0.4, ease: EASE_OMM }}
             >
               <h3 className="font-display text-2xl font-medium text-pure">
-                {triagem.passo2.title}
+                {triagem.passoContato.title}
               </h3>
-              <p className="mt-2 text-sm text-grade">{triagem.passo2.subtitle}</p>
+              <p className="mt-2 text-sm text-grade">{triagem.passoContato.subtitle}</p>
 
-              <div className="mt-8 space-y-7">
-                <Field label={triagem.passo2.segmento.label} error={errors.segmento}>
+              <div className="mt-8 grid gap-5 sm:grid-cols-2">
+                <Field label={triagem.passoContato.fields.nome.label} error={errors.nome}>
                   <input
                     className={inputClass}
-                    placeholder={triagem.passo2.segmento.placeholder}
-                    value={data.segmento}
-                    onChange={(e) => set('segmento', e.target.value)}
+                    placeholder={triagem.passoContato.fields.nome.placeholder}
+                    value={data.nome}
+                    onChange={(e) => set('nome', e.target.value)}
                   />
                 </Field>
-
-                <Field label={triagem.passo2.objetivo.label} error={errors.objetivo}>
-                  <div className="flex flex-wrap gap-2.5">
-                    {triagem.passo2.objetivo.options.map((o) => (
-                      <OptionChip key={o} active={data.objetivo === o} onClick={() => set('objetivo', o)}>
-                        {o}
-                      </OptionChip>
-                    ))}
-                  </div>
+                <Field label={triagem.passoContato.fields.empresa.label} error={errors.empresa}>
+                  <input
+                    className={inputClass}
+                    placeholder={triagem.passoContato.fields.empresa.placeholder}
+                    value={data.empresa}
+                    onChange={(e) => set('empresa', e.target.value)}
+                  />
                 </Field>
-
-                <Field label={triagem.passo2.situacao.label} error={errors.situacao}>
-                  <div className="flex flex-wrap gap-2.5">
-                    {triagem.passo2.situacao.options.map((o) => (
-                      <OptionChip key={o} active={data.situacao === o} onClick={() => set('situacao', o)}>
-                        {o}
-                      </OptionChip>
-                    ))}
-                  </div>
+                <Field label={triagem.passoContato.fields.whatsapp.label} error={errors.whatsapp}>
+                  <input
+                    className={inputClass}
+                    inputMode="tel"
+                    placeholder={triagem.passoContato.fields.whatsapp.placeholder}
+                    value={data.whatsapp}
+                    onChange={(e) => set('whatsapp', e.target.value)}
+                  />
                 </Field>
-
-                <Field label={triagem.passo2.desafio.label}>
-                  <textarea
-                    className={cn(inputClass, 'min-h-[84px] resize-none')}
-                    placeholder={triagem.passo2.desafio.placeholder}
-                    value={data.desafio}
-                    onChange={(e) => set('desafio', e.target.value)}
+                <Field label={triagem.passoContato.fields.email.label} error={errors.email}>
+                  <input
+                    className={inputClass}
+                    inputMode="email"
+                    placeholder={triagem.passoContato.fields.email.placeholder}
+                    value={data.email}
+                    onChange={(e) => set('email', e.target.value)}
                   />
                 </Field>
               </div>

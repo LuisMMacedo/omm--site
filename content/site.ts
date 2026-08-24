@@ -365,21 +365,17 @@ export const convite = {
 /** Triagem em 2 passos → diagnóstico com IA → envio pro WhatsApp da OMM. */
 export const triagem = {
   steps: [
-    { n: 1, label: 'Quem é você' },
-    { n: 2, label: 'Sua comunicação hoje' },
+    { n: 1, label: 'Sua comunicação hoje' },
+    { n: 2, label: 'Quem é você' },
   ],
-  passo1: {
-    title: 'Primeiro, quem é você',
-    subtitle: 'Para eu falar com você da forma certa.',
-    fields: {
-      nome: { label: 'Seu nome', placeholder: 'Nome completo' },
-      empresa: { label: 'Empresa', placeholder: 'Nome do seu negócio' },
-      whatsapp: { label: 'WhatsApp', placeholder: '(14) 99999-9999' },
-      email: { label: 'E-mail', placeholder: 'voce@empresa.com.br' },
-    },
-  },
-  passo2: {
-    title: 'Agora, sua comunicação hoje',
+  /**
+   * Passo 1 — contexto do negócio primeiro: perguntas rápidas, de baixo
+   * compromisso, que engajam antes de pedir dado de contato. O pedido de
+   * contato (passo 2) vem só quando a pessoa já investiu esforço e está
+   * a um clique da recompensa (o diagnóstico).
+   */
+  passoContexto: {
+    title: 'Primeiro, sua comunicação hoje',
     subtitle: 'Seja direto. É isso que alimenta a leitura.',
     segmento: {
       label: 'Segmento do negócio',
@@ -406,6 +402,16 @@ export const triagem = {
     desafio: {
       label: 'Maior incômodo hoje (opcional)',
       placeholder: 'Em uma frase, o que mais te incomoda?',
+    },
+  },
+  passoContato: {
+    title: 'Sua leitura está pronta para ser gerada',
+    subtitle: 'Só preciso saber quem é você, para falar da forma certa.',
+    fields: {
+      nome: { label: 'Seu nome', placeholder: 'Nome completo' },
+      empresa: { label: 'Empresa', placeholder: 'Nome do seu negócio' },
+      whatsapp: { label: 'WhatsApp', placeholder: '(14) 99999-9999' },
+      email: { label: 'E-mail', placeholder: 'voce@empresa.com.br' },
     },
   },
   cta: {
