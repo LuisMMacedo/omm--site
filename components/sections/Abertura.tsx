@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import Container from '@/components/primitives/Container';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,22 @@ import { lineMask, EASE_OMM } from '@/ds/motion';
 
 /** Abertura. A tese e a pessoa primeiro; o vídeo entra como evidência. */
 export default function Abertura() {
+  /**
+   * O player do Vimeo (iframe + player.js + stream) é o item mais pesado
+   * da primeira dobra. Adiar o mount até depois da pintura inicial deixa
+   * fonte, JS crítico e texto chegarem primeiro — o vídeo entra logo em
+   * seguida, sem competir por banda no momento mais crítico do load.
+   */
+  const [showVideo, setShowVideo] = useState(false);
+  useEffect(() => {
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(() => setShowVideo(true), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setShowVideo(true), 300);
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <section
       id="top"
@@ -83,13 +100,15 @@ export default function Abertura() {
                 className="absolute -inset-4 -z-10 rounded-[2rem] bg-accent/5 blur-2xl"
               />
               <div className="relative aspect-[9/16] overflow-hidden rounded-[1.5rem] border border-[var(--omm-line-strong)] bg-card shadow-2xl shadow-black/50">
-                <iframe
-                  title="OMM — apresentação"
-                  src={`https://player.vimeo.com/video/${brand.vimeoId}?background=1&autoplay=1&loop=1&muted=1&autopause=0&dnt=1`}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full"
-                />
+                {showVideo && (
+                  <iframe
+                    title="OMM — apresentação"
+                    src={`https://player.vimeo.com/video/${brand.vimeoId}?background=1&autoplay=1&loop=1&muted=1&autopause=0&dnt=1`}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full"
+                  />
+                )}
               </div>
             </div>
           </motion.div>
