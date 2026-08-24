@@ -100,7 +100,6 @@ export async function POST(req: Request) {
     const msg = await client.messages.create({
       model: MODEL,
       max_tokens: 800,
-      temperature: 0.7,
       system: OMM_SYSTEM,
       messages: [{ role: 'user', content: buildUserPrompt(data) }],
     });
