@@ -1,0 +1,20 @@
+ARQUIVOS DE MÍDIA DO SITE
+=========================
+
+1) RETRATO DO MIGUEL
+   Salve a foto aqui como:   public/miguel.jpg
+   (é a foto do retrato, fundo escuro)
+
+   Já está configurada em content/site.ts -> miguel.foto = '/miguel.jpg'
+   Se o arquivo não existir, o site mostra a reserva "MM" e NÃO quebra.
+
+2) DEPOIMENTOS EM MÍDIA
+   Salve em:  public/depoimentos/
+       marcos.mp4      (vídeo do Marcos)
+       gabriela.mp3    (áudio da Gabriela)
+
+   Depois preencha em content/site.ts -> depoimentos.itens:
+       src: '/depoimentos/marcos.mp4'
+       src: '/depoimentos/gabriela.mp3'
+
+   Enquanto 'src' estiver vazio, a seção não aparece no site.
