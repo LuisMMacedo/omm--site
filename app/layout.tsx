@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
 import SmoothScroll from '@/components/providers/SmoothScroll';
@@ -10,6 +11,20 @@ import Footer from '@/components/layout/Footer';
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+});
+
+/**
+ * Satoshi antes vinha de api.fontshare.com + cdn.fontshare.com (dois
+ * domínios externos, round-trip extra em rede móvel). Agora self-hosted
+ * via next/font/local — mesmo domínio do site, sem handshake externo.
+ */
+const satoshi = localFont({
+  src: [
+    { path: '../public/fonts/satoshi-500.woff2', weight: '500', style: 'normal' },
+    { path: '../public/fonts/satoshi-700.woff2', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-satoshi',
   display: 'swap',
 });
 
@@ -87,14 +102,8 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={inter.variable}>
+    <html lang="pt-BR" className={`${inter.variable} ${satoshi.variable}`}>
       <head>
-        {/* Satoshi (display) via Fontshare — Inter (texto) via next/font */}
-        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@500,700&display=swap"
-        />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
