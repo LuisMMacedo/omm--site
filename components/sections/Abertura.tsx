@@ -11,17 +11,15 @@ import { lineMask, EASE_OMM } from '@/ds/motion';
 export default function Abertura() {
   /**
    * O player do Vimeo (iframe + player.js + stream) é o item mais pesado
-   * da primeira dobra. Adiar o mount até depois da pintura inicial deixa
-   * fonte, JS crítico e texto chegarem primeiro — o vídeo entra logo em
-   * seguida, sem competir por banda no momento mais crítico do load.
+   * da primeira dobra. Adiar o mount por um instante deixa o primeiro
+   * frame (fonte + texto) pintar antes de puxar o iframe. `requestIdleCallback`
+   * foi trocado por um timeout curto e fixo: em celular com a animação de
+   * entrada ocupando a thread principal, "idle" podia nunca chegar e o
+   * vídeo ficava esperando bem mais que o pretendido.
    */
   const [showVideo, setShowVideo] = useState(false);
   useEffect(() => {
-    if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(() => setShowVideo(true), { timeout: 1500 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(() => setShowVideo(true), 300);
+    const id = window.setTimeout(() => setShowVideo(true), 150);
     return () => window.clearTimeout(id);
   }, []);
 
@@ -65,8 +63,8 @@ export default function Abertura() {
             </h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: EASE_OMM, delay: 1.1 }}
               className="mt-8 max-w-xl text-lg leading-relaxed text-grade md:text-xl"
             >
@@ -89,8 +87,8 @@ export default function Abertura() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 40, filter: 'blur(12px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.3, ease: EASE_OMM, delay: 0.8 }}
             className="justify-self-center lg:justify-self-end"
           >
