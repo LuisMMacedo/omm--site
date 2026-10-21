@@ -14,7 +14,8 @@ export const brand = {
   /** WhatsApp com código do país (55) — destino do botão principal e dos leads */
   whatsapp: '5514991137404',
   whatsappLabel: '(14) 99113-7404',
-  whatsappUrl: 'https://wa.me/5514991137404',
+  whatsappUrl:
+    'https://wa.me/5514991137404?text=Oi%20Miguel%2C%20vi%20seu%20site%20e%20quero%20conversar%20sobre%20um%20projeto.',
 };
 
 export const seo = {
@@ -55,10 +56,14 @@ export const topo = {
 };
 
 /**
- * 2. Trabalhos
- * `formato`: vertical (1 coluna), largo (2 colunas, 16:9), cortes (linha inteira
- * com vários vídeos verticais) ou texto (sem vídeo ainda).
- * Os arquivos ficam em `public/trabalhos/<arquivo>.mp4` + `<arquivo>.jpg` (capa).
+ * 2. Trabalhos — poucos vídeos, cada um com um papel claro.
+ * `formato`:
+ *   vertical  → 1 coluna, vídeo 9:16
+ *   largo     → 2 colunas, vídeo 16:9
+ *   cortes    → 1 coluna, UM vídeo com seletor (1–4) entre os cortes
+ *   imagem    → 2 colunas, foto de bastidor (sem vídeo por enquanto)
+ *   texto     → linha inteira, só texto + frase do cliente
+ * Arquivos em `public/trabalhos/<arquivo>.mp4` + `<arquivo>.jpg` (capa).
  */
 export const trabalhos = {
   titulo: 'Empresas que eu filmei.',
@@ -92,13 +97,6 @@ export const trabalhos = {
       video: 'monclova',
     },
     {
-      id: 'gabriel',
-      formato: 'cortes' as const,
-      cliente: 'Gabriel Silva',
-      linha: 'Uma gravação que virou quatro cortes de pregação.',
-      videos: ['gabriel-corte-1', 'gabriel-corte-2', 'gabriel-corte-3', 'gabriel-corte-4'],
-    },
-    {
       id: 'race-experience',
       formato: 'largo' as const,
       cliente: 'Race Experience',
@@ -107,15 +105,25 @@ export const trabalhos = {
     },
     {
       id: 'metamorpho',
-      formato: 'texto' as const,
+      formato: 'imagem' as const,
       cliente: 'Metamorpho · Marcos Silva',
       linha: 'Conteúdo todo mês, com roteiro, gravação, edição e publicação.',
+      imagem: '/trabalhos/metamorpho.jpg',
+      imagemAlt: 'Bastidor da gravação na Metamorpho, com softbox e câmeras na sala',
+    },
+    {
+      id: 'gabriel',
+      formato: 'cortes' as const,
+      cliente: 'Gabriel Silva',
+      linha: 'Uma gravação que virou quatro cortes de pregação.',
+      videos: ['gabriel-corte-1', 'gabriel-corte-2', 'gabriel-corte-3', 'gabriel-corte-4'],
     },
     {
       id: 'fightschool',
       formato: 'texto' as const,
       cliente: 'FightSchool · Eduardo Mayer',
       linha: 'Vídeos para a academia.',
+      citacao: 'Empresários de outro segmento vieram perguntar quem fazia meus vídeos.',
     },
   ],
 };

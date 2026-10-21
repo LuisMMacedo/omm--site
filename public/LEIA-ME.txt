@@ -1,7 +1,7 @@
 ARQUIVOS DE MÍDIA DO SITE (OMM.PRD)
 ===================================
 
-1) FOTO DO TOPO (bastidor, você gravando)
+1) FOTO DO TOPO (bastidor) — public/bastidor.jpg (já no ar: quadro do IMG_4044.mov)
    Salve como:  public/bastidor.jpg   (vertical, de preferência 9:16, ~1080x1920)
    Enquanto não existir, o topo usa a capa de um dos trabalhos.
 
