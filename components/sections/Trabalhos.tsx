@@ -89,21 +89,42 @@ function Card({ item }: { item: Item }) {
 }
 
 /**
- * 2. Trabalhos. Poucos vídeos, cada um com um papel claro:
- * 4 verticais de evento/depoimento, o after movie, o bastidor da Metamorpho,
- * os cortes do Gabriel num único player e a FightSchool em texto.
+ * 2. Trabalhos. Primeira vista: 4 vídeos, uma linha só, tudo do mesmo tamanho.
+ * O resto fica atrás de "Ver mais trabalhos" (<details> nativo, sem JavaScript).
  */
 export default function Trabalhos() {
+  const destaques = trabalhos.itens.filter((i) => i.formato === 'vertical');
+  const mais = trabalhos.itens.filter((i) => i.formato !== 'vertical');
+
   return (
     <Section id="trabalhos" className="pt-[clamp(2rem,6vh,4rem)]">
       <Container>
         <h2 className="max-w-xl text-[clamp(1.6rem,3.2vw,2.5rem)]">{trabalhos.titulo}</h2>
 
         <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-          {trabalhos.itens.map((item) => (
+          {destaques.map((item) => (
             <Card key={item.id} item={item} />
           ))}
         </div>
+
+        <details className="group mt-14">
+          <summary className="inline-flex cursor-pointer list-none items-center gap-3 rounded-full border border-[var(--omm-line-strong)] px-6 py-3 text-sm font-medium text-text transition-colors duration-300 hover:border-bege hover:text-pure [&::-webkit-details-marker]:hidden">
+            <span className="group-open:hidden">Ver mais trabalhos</span>
+            <span className="hidden group-open:inline">Mostrar menos</span>
+            <span
+              aria-hidden
+              className="text-base leading-none transition-transform duration-300 group-open:rotate-45"
+            >
+              +
+            </span>
+          </summary>
+
+          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
+            {mais.map((item) => (
+              <Card key={item.id} item={item} />
+            ))}
+          </div>
+        </details>
       </Container>
     </Section>
   );

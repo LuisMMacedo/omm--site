@@ -41,11 +41,11 @@ export default function Topo() {
               <img
                 src={imagem}
                 alt={topo.imagemAlt}
-                width={720}
-                height={1280}
+                width={1080}
+                height={1620}
                 fetchPriority="high"
                 decoding="async"
-                className="aspect-[9/16] h-auto w-full object-cover"
+                className="aspect-[2/3] h-auto w-full object-cover"
               />
             </div>
           </div>
