@@ -1,35 +1,39 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   OMM · DESIGN SYSTEM — tokens no Tailwind v4 (@theme)
-   Toda cor, fonte e ritmo do site nasce daqui.
+   OMM.PRD · tokens no Tailwind v4 (@theme)
+   Preto quente, bege, vinho só para destacar uma frase.
+   Uma fonte só (Inter), tamanho calmo, muito espaço vazio.
    ============================================================ */
 @theme {
   /* — Cor — */
-  --color-void: #050505; /* fundo base */
-  --color-surface: #111111; /* seção elevada */
-  --color-card: #1b1b1b; /* cards */
-  --color-text: #f5f5f5; /* corpo */
-  --color-pure: #ffffff; /* ênfase de headline */
-  --color-muted: #8a8a8a; /* texto secundário */
-  --color-faint: #5a5a5a; /* labels, metadados */
-  --color-accent: #ff6b00; /* laranja — uso cirúrgico */
+  --color-void: #0d0c0b; /* fundo base */
+  --color-surface: #151413; /* seção levemente elevada */
+  --color-card: #1c1a18; /* cards */
+  --color-bege: #e9e1d3; /* seções de texto claras */
+  --color-ink: #0d0c0b; /* texto sobre bege */
+  --color-vinho: #5e2329; /* só para destacar uma frase */
+  --color-text: #e9e1d3; /* corpo sobre preto */
+  --color-pure: #f4eee2; /* ênfase sobre preto */
+  --color-muted: #a39c90; /* texto secundário */
+  --color-faint: #6f695f; /* labels, metadados */
+  --color-accent: #e9e1d3; /* interação sobre preto (bege) */
 
-  /* — Tipografia — */
-  --font-display: var(--font-satoshi), var(--font-inter), system-ui, sans-serif;
+  /* — Tipografia: Inter em tudo — */
+  --font-display: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 
-  /* — Ease assinatura (expo-out) — */
+  /* — Ease — */
   --ease-omm: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* — Largura de conteúdo — */
-  --container-content: 1240px;
+  --container-content: 1120px;
 }
 
 @layer base {
   :root {
-    --omm-line: rgba(255, 255, 255, 0.08);
-    --omm-line-strong: rgba(255, 255, 255, 0.14);
+    --omm-line: rgba(233, 225, 211, 0.12);
+    --omm-line-strong: rgba(233, 225, 211, 0.22);
     color-scheme: dark;
   }
 
@@ -41,19 +45,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--color-void);
     color: var(--color-text);
     font-family: var(--font-sans);
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.65;
     overflow-x: hidden;
   }
 
   ::selection {
-    background: var(--color-accent);
-    color: #050505;
+    background: var(--color-vinho);
+    color: var(--color-bege);
   }
 
   h1,
@@ -62,24 +68,10 @@
   h4 {
     font-family: var(--font-display);
     font-weight: 500;
-    letter-spacing: -0.03em;
-    line-height: 1.02;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
     color: var(--color-pure);
     text-wrap: balance;
-  }
-
-  ::-webkit-scrollbar {
-    width: 9px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--color-void);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #262626;
-    border-radius: 999px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #333;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -96,31 +88,45 @@
 }
 
 @layer utilities {
-  /* Cinzas sofisticados = escala de opacidade do branco */
+  /* Texto secundário sobre preto */
   .text-grade {
-    color: rgba(245, 245, 245, 0.55);
+    color: rgba(233, 225, 211, 0.62);
   }
 
-  /* Glass discreto — só nav e cards flutuantes */
+  /* Cartão discreto (sem blur — barato para a GPU do celular) */
   .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px) saturate(120%);
-    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    background: rgba(233, 225, 211, 0.03);
     border: 1px solid var(--omm-line);
   }
 
-  /* Grão sutil (1 octave — barato para o compositor) */
-  .grain::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.03;
-    background-size: 160px 160px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  .tracking-eyebrow {
+    letter-spacing: 0.18em;
   }
 
-  .tracking-eyebrow {
-    letter-spacing: 0.22em;
+  /* Destaque em vinho: usar em UMA frase por seção, no máximo */
+  .destaque-vinho {
+    background: var(--color-vinho);
+    color: var(--color-bege);
+    padding: 0.04em 0.35em 0.08em;
+    border-radius: 0.2em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
+}
+
+/* Seção clara (bege): textos e títulos em tinta escura */
+.tema-bege {
+  background-color: var(--color-bege);
+  color: var(--color-ink);
+}
+.tema-bege h1,
+.tema-bege h2,
+.tema-bege h3,
+.tema-bege h4 {
+  color: var(--color-ink);
+}
+.tema-bege {
+  --omm-line: rgba(13, 12, 11, 0.14);
+  --omm-line-strong: rgba(13, 12, 11, 0.28);
+  color-scheme: light;
 }

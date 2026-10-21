@@ -38,7 +38,7 @@ const inputClass =
 
 function buildWhatsappUrl(d: FormData, diagnostico: string): string {
   const msg = [
-    'Olá, Miguel! Fiz o diagnóstico no site da OMM.',
+    'Olá, Miguel! Fiz o diagnóstico no site da OMM.PRD.',
     '',
     `👤 Nome: ${d.nome}`,
     `🏢 Empresa: ${d.empresa}`,

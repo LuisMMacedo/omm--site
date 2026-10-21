@@ -2,26 +2,28 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 /**
- * Wrapper de seção com o respiro vertical padrão do site.
- * Muito espaço negativo — clamp(6rem, 14vh, 12rem).
+ * Wrapper de seção com muito espaço vazio.
+ * tone: 'escuro' (preto quente), 'superficie' (preto levemente elevado) ou
+ * 'bege' (seção clara de texto).
  */
 export default function Section({
   id,
   children,
   className,
-  surface = false,
+  tone = 'escuro',
 }: {
   id?: string;
   children: ReactNode;
   className?: string;
-  surface?: boolean;
+  tone?: 'escuro' | 'superficie' | 'bege';
 }) {
   return (
     <section
       id={id}
       className={cn(
-        'relative scroll-mt-24 py-[clamp(6rem,14vh,12rem)]',
-        surface && 'bg-surface',
+        'relative scroll-mt-16 py-[clamp(5rem,12vh,9rem)]',
+        tone === 'superficie' && 'bg-surface',
+        tone === 'bege' && 'tema-bege',
         className,
       )}
     >

@@ -18,28 +18,22 @@ export interface DiagnosticoInput {
   desafio?: string;
 }
 
-const OMM_SYSTEM = `Você é o estrategista da OMM (Organização · Método · Movimento), uma consultoria de posicionamento e comunicação estratégica que utiliza audiovisual como ferramenta — nunca como produto. A estratégia é o produto; o vídeo é consequência.
+const OMM_SYSTEM = `Você é o Miguel Macedo, da OMM.PRD, uma produtora de vídeos para empresas. Você dirige, grava, edita e publica os vídeos — todo mês ou por projeto — e trabalha com poucos clientes de cada vez.
 
-Princípios da OMM:
-- Estratégia vem antes da câmera. Sempre.
-- Empresas não crescem porque postam mais, e sim quando comunicam melhor.
-- O problema da maioria é posicionamento e direção, não volume de conteúdo.
-- Conteúdo passa; percepção permanece.
+Sua forma de ver o problema: a empresa quase sempre é melhor do que parece. Hoje, antes de contratar, todo mundo olha o perfil da empresa. Se ele não mostra o tamanho do negócio, a venda se perde antes da conversa. O empresário sente isso como sintomas do dia a dia:
+- o cliente pede orçamento, olha o Instagram e some;
+- perde para quem entrega menos, mas parece mais preparado;
+- depende só de indicação;
+- posta quando dá, sem intenção, e não sabe se está funcionando.
 
-IMPORTANTE — como enxergar a dor: ninguém sente "dor de percepção". O empresário sente sintomas comerciais, toda semana:
-- o cliente pede orçamento e some ("está caro" quase sempre significa valor não percebido, não preço alto);
-- perde para um concorrente que entrega pior mas parece mais preparado;
-- depende de indicação, porque só aí a confiança chega pronta — sem ela, recomeça do zero e o mês vira montanha-russa;
-- precisa explicar do zero, toda vez, por que vale o que cobra.
-Comece pelo sintoma que a realidade dele sugere, nomeie-o com naturalidade, e só então mostre a causa: a empresa não é percebida do tamanho que tem.
-- Planos: Presença (porta de entrada — autoridade e consistência), Performance (geração de oportunidade) e Premium (parceria estratégica contínua).
+Como você trabalha: conversa sobre a empresa, monta roteiros (nada de vídeo genérico), grava com direção — o dono não precisa saber o que fazer na câmera — e edita e publica, olhando os números todo mês para ajustar o próximo.
 
-Tarefa: a partir dos dados de um lead, escreva um DIAGNÓSTICO ESTRATÉGICO curto e afiado (2 a 3 parágrafos, cerca de 110 palavras no total), personalizado para a realidade dele.
-1) Espelhe a situação atual e nomeie o gargalo real (quase sempre falta de direção/posicionamento, não falta de volume).
-2) Aponte o caminho OMM adequado ao objetivo declarado (indique o plano quando fizer sentido, com naturalidade).
-3) Feche com uma frase que gera vontade de conversar — sem apelo de vendedor.
+Tarefa: a partir dos dados de um lead, escreva uma LEITURA curta e direta de como a empresa dele aparece hoje (2 a 3 parágrafos, cerca de 110 palavras no total), personalizada para a realidade dele.
+1) Espelhe a situação atual e nomeie, com naturalidade, o sintoma que ele provavelmente vive.
+2) Diga qual seria o primeiro passo em vídeo para o objetivo declarado (presença todo mês, um lançamento ou evento, ou um projeto especial — o que fizer sentido).
+3) Feche convidando para conversar no WhatsApp, sem apelo de vendedor.
 
-Tom: consultivo, calmo, seguro, direto. Português do Brasil. Fale com "você". Nunca prometa números ou resultados garantidos. Não use markdown, títulos, listas ou emojis. Apenas texto corrido, elegante.`;
+Tom: primeira pessoa, calmo, simples, direto — como quem conversa, não palestra. Português do Brasil. Fale com "você". Nunca prometa números ou resultados garantidos. Não use markdown, títulos, listas ou emojis. Apenas texto corrido.`;
 
 function buildUserPrompt(d: DiagnosticoInput): string {
   return [
@@ -50,26 +44,25 @@ function buildUserPrompt(d: DiagnosticoInput): string {
     `Como está a comunicação/presença hoje: ${d.situacao}`,
     d.desafio ? `Maior desafio de comunicação: ${d.desafio}` : '',
     '',
-    'Escreva o diagnóstico estratégico para esta empresa.',
+    'Escreva a leitura de como esta empresa aparece hoje.',
   ]
     .filter(Boolean)
     .join('\n');
 }
 
-/** Fallback determinístico na voz da OMM — usado se não houver chave ou a IA falhar. */
+/** Fallback determinístico na voz do Miguel — usado se não houver chave ou a IA falhar. */
 function fallbackDiagnostico(d: DiagnosticoInput): string {
   const primeiroNome = d.nome.trim().split(/\s+/)[0] || 'você';
-  const foco =
-    d.objetivo.toLowerCase().includes('autoridade') || d.situacao.toLowerCase().includes('constância')
-      ? 'consistência estratégica'
-      : 'direção antes de volume';
   return (
-    `${primeiroNome}, pelo que você descreveu, a ${d.empresa} provavelmente entrega mais do que a imagem digital comunica hoje. ` +
-    `No segmento de ${d.segmento.toLowerCase()}, o gargalo raramente é falta de conteúdo — é falta de direção. ` +
-    `Comunicar no improviso gera presença sem percepção, e é isso que separa quem é lembrado de quem só aparece.\n\n` +
-    `Para o objetivo de "${d.objetivo.toLowerCase()}", o caminho é ${foco}: primeiro um diagnóstico profundo, depois um plano que transforma cada ativo em uma peça com função. ` +
-    `É exatamente o que o Plano Presença estrutura.\n\n` +
-    `O próximo passo é uma conversa. Vamos construir a próxima percepção da sua empresa.`
+    `${primeiroNome}, pelo que você descreveu, a ${d.empresa} provavelmente é melhor do que o perfil dela mostra hoje. ` +
+    `No segmento de ${d.segmento.toLowerCase()}, quem vai te contratar olha o seu Instagram antes de chamar. ` +
+    `Se ele não mostra o tamanho do negócio, a venda se perde antes da conversa.
+
+` +
+    `Para o objetivo de "${d.objetivo.toLowerCase()}", o primeiro passo é entender o que a empresa faz de melhor, montar roteiros em cima disso e gravar com direção — sem vídeo genérico.
+
+` +
+    `Me chama no WhatsApp e a gente conversa sobre o seu caso.`
   );
 }
 
