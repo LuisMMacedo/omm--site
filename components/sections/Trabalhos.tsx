@@ -50,6 +50,23 @@ function Card({ item }: { item: Item }) {
         </article>
       );
 
+    case 'foto':
+      return (
+        <article>
+          <div className="relative aspect-[9/16] overflow-hidden rounded-xl bg-card">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.imagem}
+              alt={item.imagemAlt}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover object-[85%_50%]"
+            />
+          </div>
+          <Legenda cliente={item.cliente} linha={item.linha} />
+        </article>
+      );
+
     case 'cortes':
       return (
         <article>
@@ -60,7 +77,7 @@ function Card({ item }: { item: Item }) {
 
     case 'texto':
       return (
-        <article className="flex flex-col justify-between rounded-xl border border-[var(--omm-line)] p-5 md:col-span-3 md:p-8">
+        <article className="col-span-2 flex flex-col justify-between rounded-xl border border-[var(--omm-line)] p-5 md:p-8">
           <div>
             <h3 className="text-base font-medium text-pure">{item.cliente}</h3>
             <p className="mt-1 text-sm leading-snug text-grade">{item.linha}</p>

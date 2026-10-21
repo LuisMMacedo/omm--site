@@ -62,7 +62,8 @@ export const topo = {
  *   largo     → 2 colunas, vídeo 16:9
  *   cortes    → 1 coluna, UM vídeo com seletor (1–4) entre os cortes
  *   imagem    → 2 colunas, foto de bastidor (sem vídeo por enquanto)
- *   texto     → linha inteira, só texto + frase do cliente
+ *   foto      → 1 coluna, foto vertical (9:16)
+ *   texto     → 2 colunas, só texto + frase do cliente
  * Arquivos em `public/trabalhos/<arquivo>.mp4` + `<arquivo>.jpg` (capa).
  */
 export const trabalhos = {
@@ -117,6 +118,14 @@ export const trabalhos = {
       cliente: 'Gabriel Silva',
       linha: 'Uma gravação que virou quatro cortes de pregação.',
       videos: ['gabriel-corte-1', 'gabriel-corte-2', 'gabriel-corte-3', 'gabriel-corte-4'],
+    },
+    {
+      id: 'dembre',
+      formato: 'foto' as const,
+      cliente: 'Dembré · Jéssica',
+      linha: 'A campanha do sérum da marca.',
+      imagem: '/trabalhos/dembre.jpg',
+      imagemAlt: 'Duas crianças assistindo à campanha do sérum Dembré no monitor',
     },
     {
       id: 'fightschool',
